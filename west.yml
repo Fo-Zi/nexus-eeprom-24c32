@@ -1,0 +1,6 @@
+manifest:
+  projects:
+    - name: my-basic-hal
+      url: https://github.com/Fo-Zi/my-basic-HAL
+      revision: main
+      path: hal-interface
