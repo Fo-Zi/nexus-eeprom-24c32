@@ -2,5 +2,5 @@ manifest:
   projects:
     - name: my-basic-hal
       url: https://github.com/Fo-Zi/my-basic-HAL
-      revision: main
+      revision: v0.3.0
       path: hal-interface
