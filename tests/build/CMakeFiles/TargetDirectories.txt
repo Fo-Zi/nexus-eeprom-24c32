@@ -1,6 +1,0 @@
-/workspace/eeprom-driver/tests/build/CMakeFiles/eeprom_24c32_lib.dir
-/workspace/eeprom-driver/tests/build/CMakeFiles/nhal_i2c_mock_only.dir
-/workspace/eeprom-driver/tests/build/CMakeFiles/test_eeprom_24c32.dir
-/workspace/eeprom-driver/tests/build/CMakeFiles/test.dir
-/workspace/eeprom-driver/tests/build/CMakeFiles/edit_cache.dir
-/workspace/eeprom-driver/tests/build/CMakeFiles/rebuild_cache.dir

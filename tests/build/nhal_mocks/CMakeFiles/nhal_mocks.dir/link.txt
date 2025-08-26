@@ -1,2 +1,0 @@
-/usr/bin/ar qc libnhal_mocks.a CMakeFiles/nhal_mocks.dir/src/nhal_uart_mock.cpp.o CMakeFiles/nhal_mocks.dir/src/nhal_spi_mock.cpp.o CMakeFiles/nhal_mocks.dir/src/nhal_i2c_mock.cpp.o CMakeFiles/nhal_mocks.dir/src/nhal_pin_mock.cpp.o CMakeFiles/nhal_mocks.dir/src/nhal_wdt_mock.cpp.o
-/usr/bin/ranlib libnhal_mocks.a

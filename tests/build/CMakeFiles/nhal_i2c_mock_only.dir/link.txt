@@ -1,2 +1,0 @@
-/usr/bin/ar qc libnhal_i2c_mock_only.a "CMakeFiles/nhal_i2c_mock_only.dir/workspace/hal-interface/testing/gtest_mocks/src/nhal_i2c_mock.cpp.o"
-/usr/bin/ranlib libnhal_i2c_mock_only.a
