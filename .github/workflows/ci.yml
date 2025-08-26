@@ -21,13 +21,32 @@ jobs:
 
       - name: Initialize West workspace
         run: |
+          echo "=== Before west init ==="
+          pwd
+          ls -la
           cd eeprom-driver
+          echo "=== Inside eeprom-driver ==="
+          pwd
+          ls -la
           west init --local .
           west update
+          echo "=== After west update ==="
+          cd ..
+          pwd
+          ls -la
 
       - name: Build and run tests
         run: |
+          echo "=== Before building ==="
+          pwd
+          ls -la
           cd eeprom-driver/tests
+          echo "=== Inside tests directory ==="
+          pwd
+          ls -la
+          echo "=== Looking for hal-interface ==="
+          ls -la ../hal-interface/ || echo "hal-interface not found at ../hal-interface/"
+          ls -la ../../hal-interface/ || echo "hal-interface not found at ../../hal-interface/"
           cmake -B build
           cmake --build build
           ctest --test-dir build --output-on-failure --verbose
