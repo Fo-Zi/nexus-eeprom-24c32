@@ -5,6 +5,9 @@ project(eeprom_24c32_tests)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# HAL interface path - easily configurable
+set(HAL_INTERFACE_PATH "../../hal-interface" CACHE STRING "Path to hal-interface directory")
+
 # Find required packages
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
@@ -17,18 +20,18 @@ add_library(eeprom_24c32_lib
 target_include_directories(eeprom_24c32_lib
     PUBLIC
         ../include
-        ../../hal-interface/include
+        ${HAL_INTERFACE_PATH}/include
 )
 
 # Add only the I2C mock (avoid broken UART/SPI mocks)
 add_library(nhal_i2c_mock_only
-    ../../hal-interface/testing/gtest_mocks/src/nhal_i2c_mock.cpp
+    ${HAL_INTERFACE_PATH}/testing/gtest_mocks/src/nhal_i2c_mock.cpp
 )
 
 target_include_directories(nhal_i2c_mock_only
     PUBLIC
-        ../../hal-interface/testing/gtest_mocks/include
-        ../../hal-interface/include
+        ${HAL_INTERFACE_PATH}/testing/gtest_mocks/include
+        ${HAL_INTERFACE_PATH}/include
 )
 
 target_link_libraries(nhal_i2c_mock_only
@@ -54,8 +57,8 @@ target_link_libraries(test_eeprom_24c32
 target_include_directories(test_eeprom_24c32
     PRIVATE
         ../include
-        ../../hal-interface/include
-        ../../hal-interface/testing/gtest_mocks/include
+        ${HAL_INTERFACE_PATH}/include
+        ${HAL_INTERFACE_PATH}/testing/gtest_mocks/include
 )
 
 # Enable testing
