@@ -1,0 +1,30 @@
+name: EEPROM Driver CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    container: ghcr.io/fo-zi/nexus-ci-base:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize West workspace
+        run: |
+          west init --local .
+          west update
+
+      - name: Build and run tests
+        run: |
+          cd tests
+          cmake -B build
+          cmake --build build
+          ctest --test-dir build --output-on-failure --verbose
