@@ -28,10 +28,6 @@ coverage.info
 *.so
 *.dylib
 
-# Executables
-test_*
-*_test
-
 # IDE files
 .vscode/
 .idea/
