@@ -1,9 +1,9 @@
 /**
  * @file eeprom_24c32.h
- * @brief Driver for 24C32 EEPROM using HAL I2C interface
+ * @brief Driver for 24C32 EEPROM using nhal I2C interface
  *
  * This driver provides functions to read and write data to/from
- * a 24C32 EEPROM (32Kbit/4KB) using the HAL I2C interface.
+ * a 24C32 EEPROM (32Kbit/4KB) using the nhal I2C interface.
  */
 #ifndef EEPROM_24C32_H
 #define EEPROM_24C32_H
@@ -12,8 +12,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include "hal_i2c_master.h"
-#include "hal_i2c_types.h"
+#include "nhal_i2c_master.h"
+#include "nhal_i2c_types.h"
 
 #define EEPROM_24C32_SIZE_BYTES         4096    /**< Total EEPROM size in bytes */
 #define EEPROM_24C32_PAGE_SIZE_BYTES    32      /**< Page size for write operations */
@@ -28,23 +28,25 @@ typedef enum {
 } eeprom_24c32_result_t;
 
 typedef struct {
-    struct hal_i2c_context *i2c_ctx;   /**< HAL I2C context */
-    hal_timeout_ms timeout_ms;          /**< I2C operation timeout */
+    struct nhal_i2c_context *ctx;   /**< nhal I2C context */
+    uint8_t device_address;              /**< 7-bit I2C device address */
+    nhal_timeout_ms timeout_ms;          /**< I2C operation timeout */
 } eeprom_24c32_handle_t;
 
 /**
  * @brief Initialize EEPROM 24C32 driver
  *
  * @param handle Pointer to EEPROM handle structure
- * @param i2c_ctx Initialized HAL I2C context
+ * @param ctx Initialized nhal I2C context
  * @param device_address 7-bit I2C device address (typically 0x50)
  * @param timeout_ms Timeout for I2C operations
  * @return eeprom_24c32_result_t Result of initialization
  */
 eeprom_24c32_result_t eeprom_24c32_init(
     eeprom_24c32_handle_t *handle,
-    struct hal_i2c_context *i2c_ctx,
-    hal_timeout_ms timeout_ms
+    struct nhal_i2c_context *ctx,
+    uint8_t device_address,
+    nhal_timeout_ms timeout_ms
 );
 
 /**

@@ -1,6 +1,6 @@
 manifest:
   projects:
-    - name: my-basic-hal
-      url: https://github.com/Fo-Zi/my-basic-HAL
+    - name: nexus-hal-interface
+      url: https://github.com/Fo-Zi/nexus-hal-interface
       revision: main
       path: hal-interface
