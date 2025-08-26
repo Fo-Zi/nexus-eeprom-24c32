@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test_eeprom_24c32.dir/test_eeprom_24c32_init.cpp.o -o test_eeprom_24c32  libeeprom_24c32_lib.a libnhal_i2c_mock_only.a /usr/lib/x86_64-linux-gnu/libgtest.a /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgmock.a /usr/lib/x86_64-linux-gnu/libgtest.a

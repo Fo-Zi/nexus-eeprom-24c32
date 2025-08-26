@@ -1,0 +1,2 @@
+/usr/bin/ar qc libeeprom_24c32_lib.a "CMakeFiles/eeprom_24c32_lib.dir/workspace/eeprom-driver/src/eeprom_24c32.c.o"
+/usr/bin/ranlib libeeprom_24c32_lib.a
