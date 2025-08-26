@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(eeprom_24c32_tests)
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # HAL interface path - easily configurable
@@ -43,6 +43,8 @@ target_link_libraries(nhal_i2c_mock_only
 # Create test executable
 add_executable(test_eeprom_24c32
     test_eeprom_24c32_init.cpp
+    test_eeprom_24c32_read.cpp
+    test_eeprom_24c32_write.cpp
 )
 
 target_link_libraries(test_eeprom_24c32
