@@ -38,7 +38,7 @@ TEST_F(Eeprom24c32ReadTest, ReadValidData) {
 
     EXPECT_CALL(NhalI2cMock::instance(), nhal_i2c_master_write_read_reg(
         &ctx, 0x50, _, 2, read_buffer, 4, 1000))
-        .WillOnce([&](struct nhal_i2c_context* ctx, nhal_i2c_slave_addr addr, const uint8_t* reg, size_t reg_len, uint8_t* data, size_t data_len, nhal_timeout_ms timeout) {
+        .WillOnce([&](struct nhal_i2c_context* ctx, nhal_i2c_address addr, const uint8_t* reg, size_t reg_len, uint8_t* data, size_t data_len, nhal_timeout_ms timeout) {
             memcpy(data, expected_data, 4);
             return NHAL_OK;
         });
