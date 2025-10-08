@@ -4,6 +4,7 @@
  */
 
 #include "eeprom_24c32.h"
+#include "nhal_common.h"
 #include <string.h>
 
 static eeprom_24c32_result_t hal_to_eeprom_result(nhal_result_t hal_result)
@@ -13,10 +14,16 @@ static eeprom_24c32_result_t hal_to_eeprom_result(nhal_result_t hal_result)
             return EEPROM_24C32_OK;
         case NHAL_ERR_TIMEOUT:
             return EEPROM_24C32_ERR_WRITE_TIMEOUT;
-        case NHAL_ERR_OTHER:
-            return EEPROM_24C32_ERR_I2C_ERROR;
         case NHAL_ERR_INVALID_ARG:
             return EEPROM_24C32_ERR_INVALID_ARG;
+        case NHAL_ERR_NO_RESPONSE:
+        case NHAL_ERR_TRANSMISSION_ERROR:
+        case NHAL_ERR_HW_FAILURE:
+        case NHAL_ERR_BUSY:
+        case NHAL_ERR_NOT_INITIALIZED:
+        case NHAL_ERR_NOT_CONFIGURED:
+        case NHAL_ERR_OTHER:
+            return EEPROM_24C32_ERR_I2C_ERROR;
         default:
             return EEPROM_24C32_ERR_I2C_ERROR;
     }
@@ -25,16 +32,19 @@ static eeprom_24c32_result_t hal_to_eeprom_result(nhal_result_t hal_result)
 eeprom_24c32_result_t eeprom_24c32_init(
     eeprom_24c32_handle_t *handle,
     struct nhal_i2c_context *ctx,
-    uint8_t device_address,
-    nhal_timeout_ms timeout_ms)
+    uint8_t device_address)
 {
     if (handle == NULL || ctx == NULL) {
         return EEPROM_24C32_ERR_INVALID_ARG;
     }
 
+    if (device_address > 0x7F) {
+        return EEPROM_24C32_ERR_INVALID_ARG;
+    }
+
     handle->ctx = ctx;
-    handle->device_address = device_address;
-    handle->timeout_ms = timeout_ms;
+    handle->device_address.type = NHAL_I2C_7BIT_ADDR;
+    handle->device_address.addr.address_7bit = device_address;
 
     return EEPROM_24C32_OK;
 }
@@ -65,8 +75,7 @@ eeprom_24c32_result_t eeprom_24c32_read(
         addr_bytes,
         sizeof(addr_bytes),
         data,
-        length,
-        handle->timeout_ms
+        length
     );
 
     return hal_to_eeprom_result(result);
@@ -105,8 +114,7 @@ eeprom_24c32_result_t eeprom_24c32_write_page(
         handle->ctx,
         handle->device_address,
         write_buffer,
-        2 + length,
-        handle->timeout_ms
+        2 + length
     );
 
     return hal_to_eeprom_result(result);
@@ -148,12 +156,13 @@ eeprom_24c32_result_t eeprom_24c32_write(
             return result;
         }
 
-        uint32_t write_start_time = 0;
+        uint32_t elapsed_ms = 0;
         while (!eeprom_24c32_is_ready(handle)) {
-            if (write_start_time >= EEPROM_24C32_WRITE_CYCLE_TIME_MS) {
+            if (elapsed_ms >= EEPROM_24C32_WRITE_CYCLE_TIME_MS) {
                 return EEPROM_24C32_ERR_WRITE_TIMEOUT;
             }
-            write_start_time++;
+            nhal_delay_milliseconds(1);
+            elapsed_ms++;
         }
 
         bytes_written += bytes_to_write;
@@ -175,8 +184,7 @@ bool eeprom_24c32_is_ready(eeprom_24c32_handle_t *handle)
         handle->ctx,
         handle->device_address,
         &dummy_data,
-        1,
-        100
+        1
     );
 
     return (result == NHAL_OK);

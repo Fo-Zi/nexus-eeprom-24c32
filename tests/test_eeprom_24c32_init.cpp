@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include "test_nhal_i2c_context_stub.h"
 #include "nhal_i2c_mock.hpp"
 
 extern "C" {
@@ -27,39 +28,42 @@ protected:
 
 TEST_F(Eeprom24c32InitTest, InitWithValidParameters) {
     uint8_t device_address = 0x50;
-    nhal_timeout_ms timeout = 1000;
-
-    eeprom_24c32_result_t result = eeprom_24c32_init(&handle, &ctx, device_address, timeout);
+    eeprom_24c32_result_t result = eeprom_24c32_init(&handle, &ctx, device_address);
 
     EXPECT_EQ(result, EEPROM_24C32_OK);
     EXPECT_EQ(handle.ctx, &ctx);
-    EXPECT_EQ(handle.device_address, device_address);
-    EXPECT_EQ(handle.timeout_ms, timeout);
+    EXPECT_EQ(handle.device_address.type, NHAL_I2C_7BIT_ADDR);
+    EXPECT_EQ(handle.device_address.addr.address_7bit, device_address);
 }
 
 TEST_F(Eeprom24c32InitTest, InitWithNullHandle) {
     uint8_t device_address = 0x50;
-    nhal_timeout_ms timeout = 1000;
 
-    eeprom_24c32_result_t result = eeprom_24c32_init(nullptr, &ctx, device_address, timeout);
+    eeprom_24c32_result_t result = eeprom_24c32_init(nullptr, &ctx, device_address);
 
     EXPECT_EQ(result, EEPROM_24C32_ERR_INVALID_ARG);
 }
 
 TEST_F(Eeprom24c32InitTest, InitWithNullContext) {
     uint8_t device_address = 0x50;
-    nhal_timeout_ms timeout = 1000;
 
-    eeprom_24c32_result_t result = eeprom_24c32_init(&handle, nullptr, device_address, timeout);
+    eeprom_24c32_result_t result = eeprom_24c32_init(&handle, nullptr, device_address);
 
     EXPECT_EQ(result, EEPROM_24C32_ERR_INVALID_ARG);
 }
 
 TEST_F(Eeprom24c32InitTest, InitWithBothNullParameters) {
     uint8_t device_address = 0x50;
-    nhal_timeout_ms timeout = 1000;
 
-    eeprom_24c32_result_t result = eeprom_24c32_init(nullptr, nullptr, device_address, timeout);
+    eeprom_24c32_result_t result = eeprom_24c32_init(nullptr, nullptr, device_address);
+
+    EXPECT_EQ(result, EEPROM_24C32_ERR_INVALID_ARG);
+}
+
+TEST_F(Eeprom24c32InitTest, InitWithInvalidSevenBitAddress) {
+    uint8_t device_address = 0x80; // Out of 7-bit range
+
+    eeprom_24c32_result_t result = eeprom_24c32_init(&handle, &ctx, device_address);
 
     EXPECT_EQ(result, EEPROM_24C32_ERR_INVALID_ARG);
 }

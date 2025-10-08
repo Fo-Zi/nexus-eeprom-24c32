@@ -28,9 +28,8 @@ typedef enum {
 } eeprom_24c32_result_t;
 
 typedef struct {
-    struct nhal_i2c_context *ctx;   /**< nhal I2C context */
-    uint8_t device_address;              /**< 7-bit I2C device address */
-    nhal_timeout_ms timeout_ms;          /**< I2C operation timeout */
+    struct nhal_i2c_context *ctx;        /**< nhal I2C context */
+    nhal_i2c_address_t device_address;   /**< I2C device address */
 } eeprom_24c32_handle_t;
 
 /**
@@ -38,15 +37,13 @@ typedef struct {
  *
  * @param handle Pointer to EEPROM handle structure
  * @param ctx Initialized nhal I2C context
- * @param device_address 7-bit I2C device address (typically 0x50)
- * @param timeout_ms Timeout for I2C operations
+ * @param device_address 7-bit I2C device address (0x00-0x7F, typically 0x50)
  * @return eeprom_24c32_result_t Result of initialization
  */
 eeprom_24c32_result_t eeprom_24c32_init(
     eeprom_24c32_handle_t *handle,
     struct nhal_i2c_context *ctx,
-    uint8_t device_address,
-    nhal_timeout_ms timeout_ms
+    uint8_t device_address
 );
 
 /**
